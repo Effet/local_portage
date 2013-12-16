@@ -1,0 +1,23 @@
+#!/sbin/runscript
+# Copyright 1999-2012 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+depend() {
+	need net
+	use netmount
+}
+
+start() {
+	ebegin "Starting DrCom"
+	start-stop-daemon --start --name drcom \
+	--exec python2 /usr/bin/drcom-client.py &> /dev/null & \
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping DrCom"
+	start-stop-daemon --stop --name drcom \
+	--exec python2 /usr/bin/drcom-client.py logout &> /dev/null & \
+	eend $?
+}
